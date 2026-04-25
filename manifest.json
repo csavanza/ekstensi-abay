@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Detector",
+  "version": "4.0",
+  "description": "Highlight nama instan (no delay)",
+
+  "permissions": ["storage"],
+
+  "host_permissions": [
+    "https://agwl6.suksesbogil.com/*"
+  ],
+
+  "action": {
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://agwl6.suksesbogil.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["notif.mp3"],
+      "matches": ["https://agwl6.suksesbogil.com/*"]
+    }
+  ]
+}

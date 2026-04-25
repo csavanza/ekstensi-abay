@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>ABAY DETECTOR</title>
+
+<style>
+
+body{
+  font-family:Segoe UI,Arial;
+  width:380px;
+  height:520px;
+  padding:14px;
+  color:white;
+  position:relative;
+  overflow:hidden;
+}
+
+/* 🎬 VIDEO BACKGROUND */
+#bgVideo{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* 🌑 OVERLAY */
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.65);
+  z-index:1;
+}
+
+/* ⚡ GLOW */
+.glow{
+  position:fixed;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background: radial-gradient(circle, rgba(56,189,248,0.15), transparent 60%),
+              radial-gradient(circle, rgba(34,211,238,0.10), transparent 60%);
+  animation: moveGlow 6s linear infinite;
+  z-index:2;
+}
+
+@keyframes moveGlow{
+  0%{transform:translate(0,0) rotate(0deg);}
+  50%{transform:translate(10%,10%) rotate(180deg);}
+  100%{transform:translate(0,0) rotate(360deg);}
+}
+
+/* ⚡ FLASH PETIR */
+.flash{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:white;
+  opacity:0;
+  z-index:3;
+  pointer-events:none;
+  animation:flash 6s infinite;
+}
+
+@keyframes flash{
+  0%,95%,100%{opacity:0;}
+  96%{opacity:0.8;}
+  97%{opacity:0;}
+}
+
+/* 🌧️ RAIN */
+#rainCanvas{
+  position:absolute;
+  top:0;
+  left:0;
+  width:380px;
+  height:520px;
+  z-index:4;
+  pointer-events:none;
+  opacity:0.6;
+}
+
+/* 🧠 MAIN */
+.main{
+  position:relative;
+  z-index:5;
+}
+
+/* 🔝 PANEL TITLE */
+.panel-title{
+  position:absolute;
+  top:8px;
+  left:10px;
+  font-size:14px;
+  font-weight:900;
+  color:#22d3ee;
+  text-shadow:0 0 8px #22d3ee, 0 0 20px #38bdf8;
+}
+
+/* 👤 LOGO */
+.logo{
+  text-align:center;
+  margin-top:10px;
+  margin-bottom:6px;
+}
+
+.logo img{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:2px solid #38bdf8;
+  box-shadow:
+    0 0 10px #38bdf8,
+    0 0 25px #38bdf8,
+    0 0 45px #22d3ee;
+  animation:pulse 2.5s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1); filter:brightness(1);}
+  50%{transform:scale(1.08); filter:brightness(1.4);}
+  100%{transform:scale(1); filter:brightness(1);}
+}
+
+/* 🏷️ TITLE */
+h2{
+  text-align:center;
+  font-size:16px;
+  font-weight:900;
+  color:#38bdf8;
+  margin-top:10px;
+  margin-bottom:6px;
+  text-shadow:0 0 10px #38bdf8;
+}
+
+/* ✍️ INPUT */
+.input-group{
+  display:flex;
+  gap:6px;
+  margin-bottom:8px;
+}
+
+input{
+  flex:1;
+  padding:9px;
+  border-radius:7px;
+  border:1px solid #1e3a8a;
+  background:#020617;
+  color:white;
+  font-size:12px;
+}
+
+/* 🔍 SEARCH */
+.search-box{
+  width:100%;
+  padding:9px;
+  border-radius:7px;
+  border:1px solid #1e3a8a;
+  background:#050a1a;
+  color:white;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+/* ➕ BUTTON */
+.add-btn{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  padding:7px 10px;
+  border-radius:7px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* 📜 LIST */
+ul{
+  list-style:none;
+  padding:0;
+  margin-top:10px;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+/* 🧾 ITEM */
+li{
+  background:#020617;
+  margin-bottom:6px;
+  padding:8px;
+  border-radius:7px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  border:1px solid #1e293b;
+}
+
+li button{
+  background:#ef4444;
+  border:none;
+  color:white;
+  border-radius:5px;
+  font-size:10px;
+  padding:3px 6px;
+  cursor:pointer;
+}
+
+/* ⚠️ EMPTY */
+.empty{
+  text-align:center;
+  font-size:11px;
+  font-weight:bold;
+  color:#38bdf8;
+  margin-top:8px;
+}
+
+/* 🔻 FOOTER */
+.footer{
+  text-align:center;
+  font-size:10px;
+  font-weight:bold;
+  margin-top:8px;
+  opacity:0.8;
+  color:#22d3ee;
+}
+
+</style>
+</head>
+
+<body>
+
+<video autoplay muted loop id="bgVideo">
+  <source src="background.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+<div class="glow"></div>
+<div class="flash"></div>
+
+<canvas id="rainCanvas"></canvas>
+
+<div class="main">
+
+<div class="panel-title">ABAY PANEL</div>
+
+<div class="logo">
+  <img src="icon.png">
+</div>
+
+<!-- ✅ HANYA INI YANG DIUBAH -->
+<h2>DETECTOR</h2>
+
+<div class="input-group">
+<input id="nameInput" placeholder="Masukkan nama...">
+<button class="add-btn" id="addBtn">+</button>
+</div>
+
+<input id="searchInput" class="search-box" placeholder="Cari nama...">
+
+<ul id="nameList"></ul>
+
+<div id="emptyMsg" class="empty">BY. ABAY PANEL</div>
+
+<div class="footer">v5.0 • NEON STORM MODE</div>
+
+</div>
+
+<script src="popup.js"></script>
+
+</body>
+</html>
